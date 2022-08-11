@@ -1,5 +1,5 @@
 const express=require("express")
-const {getAllCartProducts,addToCart,removeFromCart, updateCartProduct, checkoutCart, updateDeliveryMethod,getAllCartProductsForMobile} = require("../controllers/cartController")
+const {getAllCartProducts,addToCart,removeFromCart, updateCartProduct, checkoutCart, updateDeliveryMethod,getAllCartProductsForMobile,addToCartForMobile,updateCartProductMobile,removeFromCartMobile,checkoutCartMobile} = require("../controllers/cartController")
 const { getAccessToRoute } = require("../middlewares/authorization/auth")
 //api/questions
 const router = express.Router()
@@ -14,6 +14,10 @@ router.post("/changeDeliveryMethod",getAccessToRoute,updateDeliveryMethod)
 
 //#region Mobile Services
 router.get("/allproducts",getAllCartProductsForMobile)
+router.post("/addMobile",addToCartForMobile)
+router.post("/updateMobile",updateCartProductMobile)
+router.post("/checkoutMobile",checkoutCartMobile)
+router.post("/:cart_id/deleteMobile",removeFromCartMobile)
 //#endregion
 module.exports=router
 

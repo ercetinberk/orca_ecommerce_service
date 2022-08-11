@@ -189,5 +189,27 @@ const getSearchProducts = asyncErrorWrapper(async (req, res) => {
     message: { table: "Item", data: rL, dataCount: count },
   });
 });
+const getProductForMobile = asyncErrorWrapper(async (req, res) => {  
+  let rL = [];
+  let query = Get_All_Products;
+  //Mobile Control
+  if(req.query.customerId){
+    const jsonQuery = await DBCommands.runQuery(Get_All_Customers);
+    const user = jsonQuery.recordset.find((x) => x.id === req.query.customerId);
+    query= query.replace("@customerpricegroup", user.customerpricegroup );
+  }
+  //Mobile Control
 
-module.exports = { getProducts,getWebOfferProducts,getCardProduct,getSearchProducts };
+  query+=` where itemno ='${req.query.itemNo}'`
+  console.log(query);
+  const jsonQuery = await DBCommands.runQuery(query);
+
+  rL = jsonQuery.recordset;
+  
+  res.status(200).json({
+    status: "success",
+    message: { table: "Item", data: rL, dataCount: 1 },
+  });
+});
+
+module.exports = { getProducts,getWebOfferProducts,getCardProduct,getSearchProducts,getProductForMobile };
